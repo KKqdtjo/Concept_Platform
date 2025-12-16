@@ -162,24 +162,55 @@ const renderCharts = () => {
 
   if (domainChartInstance) {
     domainChartInstance.setOption({
-      backgroundColor: 'transparent',
-      tooltip: { trigger: 'item' },
+      backgroundColor: '#020617',
+      tooltip: {
+        trigger: 'item',
+        backgroundColor: 'rgba(15,23,42,0.92)',
+        borderColor: 'rgba(45,212,191,0.8)',
+        borderWidth: 1,
+        textStyle: { color: '#e0f2fe' }
+      },
       legend: {
-        top: 10,
-        textStyle: { color: '#4b5563' }
+        top: 12,
+        icon: 'circle',
+        itemWidth: 10,
+        itemHeight: 10,
+        textStyle: { color: '#9ca3af' }
       },
       series: [
         {
           name: '技术领域',
           type: 'pie',
-          radius: ['35%', '65%'],
+          radius: ['32%', '62%'],
           roseType: 'area',
           itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.1)'
+            borderColor: 'rgba(34, 211, 238, 0.8)',
+            borderWidth: 1.4,
+            shadowBlur: 25,
+            shadowColor: 'rgba(56,189,248,0.7)'
           },
-          label: { color: '#1f2937' },
+          label: {
+            color: '#e5f9ff',
+            fontSize: 12,
+            textShadowBlur: 6,
+            textShadowColor: 'rgba(15,23,42,0.9)'
+          },
+          color: [
+            '#22d3ee',
+            '#38bdf8',
+            '#4ade80',
+            '#a855f7',
+            '#f97316',
+            '#facc15'
+          ],
+          emphasis: {
+            scale: true,
+            scaleSize: 8,
+            itemStyle: {
+              shadowBlur: 40,
+              shadowColor: 'rgba(34,211,238,0.95)'
+            }
+          },
           data: domainStats.value
         }
       ]
@@ -195,34 +226,64 @@ const renderCharts = () => {
     const barData = order.map(name => valueMap[name] || 0)
 
     statusChartInstance.setOption({
-      backgroundColor: 'transparent',
-      tooltip: { trigger: 'axis' },
-      grid: { left: 40, right: 20, top: 30, bottom: 30 },
+      backgroundColor: '#020617',
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(15,23,42,0.92)',
+        borderColor: 'rgba(56,189,248,0.8)',
+        borderWidth: 1,
+        textStyle: { color: '#e0f2fe' },
+        axisPointer: {
+          type: 'shadow',
+          shadowStyle: {
+            color: 'rgba(8,47,73,0.9)'
+          }
+        }
+      },
+      grid: { left: 40, right: 20, top: 40, bottom: 32 },
       xAxis: {
         type: 'category',
         data: order,
-        axisLine: { lineStyle: { color: '#a5b4fc' } },
-        axisLabel: { color: '#475569' }
+        axisLine: { lineStyle: { color: '#38bdf8' } },
+        axisLabel: { color: '#9ca3af' },
+        axisTick: { show: false }
       },
       yAxis: {
         type: 'value',
-        axisLine: { lineStyle: { color: '#a5b4fc' } },
-        splitLine: { lineStyle: { color: 'rgba(148,163,184,0.25)' } },
-        axisLabel: { color: '#475569' }
+        axisLine: { lineStyle: { color: '#0f172a' } },
+        splitLine: {
+          lineStyle: {
+            color: ['rgba(15,118,110,0.6)'],
+            type: 'dashed'
+          }
+        },
+        axisLabel: { color: '#6b7280' }
       },
       series: [
         {
           name: '数量',
           type: 'bar',
-          barWidth: '45%',
+          barWidth: '46%',
           itemStyle: {
-            borderRadius: [6, 6, 0, 0],
+            borderRadius: [9, 9, 0, 0],
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#2f6ae6' },
-              { offset: 1, color: '#61a0ff' }
-            ])
+              { offset: 0, color: '#4ade80' },
+              { offset: 0.4, color: '#22d3ee' },
+              { offset: 1, color: '#0f172a' }
+            ]),
+            borderColor: 'rgba(45,212,191,0.9)',
+            borderWidth: 1.4,
+            shadowBlur: 24,
+            shadowColor: 'rgba(34,211,238,0.9)'
           },
-          data: barData
+          data: barData,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 42,
+              shadowColor: 'rgba(56,189,248,1)',
+              borderColor: '#e0f2fe'
+            }
+          }
         }
       ]
     })
@@ -433,6 +494,43 @@ onBeforeUnmount(() => {
 .chart {
   width: 100%;
   height: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(34, 197, 235, 0.16), transparent 60%),
+    radial-gradient(circle at 90% 100%, rgba(52, 211, 153, 0.18), transparent 60%),
+    linear-gradient(135deg, #020617, #020617 40%, #020617 60%, #020617);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 0 18px rgba(34, 211, 238, 0.4),
+    0 30px 60px rgba(15, 23, 42, 0.85);
+  position: relative;
+}
+
+.chart::before {
+  content: '';
+  position: absolute;
+  inset: 10px 14px 14px 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(75, 85, 99, 0.8);
+  border-image: linear-gradient(
+      120deg,
+      rgba(56, 189, 248, 0.6),
+      rgba(107, 114, 128, 0.3),
+      rgba(45, 212, 191, 0.7)
+    )
+    1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.chart::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(148, 163, 184, 0.16) 0, transparent 55%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
 }
 
 .reject-box {

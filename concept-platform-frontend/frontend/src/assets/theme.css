@@ -1,35 +1,37 @@
-/* Material-leaning light theme tokens */
+/* Cyber-style dark theme tokens */
 :root {
-  color-scheme: light;
-  --primary-50: #e8f0ff;
-  --primary-100: #d6e4ff;
-  --primary-200: #adc8ff;
-  --primary-300: #84a9ff;
-  --primary-400: #4c80f0;
-  --primary-500: #2f6ae6;
-  --primary-600: #1d65f1;
-  --primary-700: #144ac7;
-  --primary-800: #0f3aa5;
-  --primary-900: #0b2f86;
-  --accent: #1d65f1;
+  color-scheme: dark;
+  --primary-50: #ecfeff;
+  --primary-100: #cffafe;
+  --primary-200: #a5f3fc;
+  --primary-300: #67e8f9;
+  --primary-400: #22d3ee;
+  --primary-500: #06b6d4;
+  --primary-600: #0891b2;
+  --primary-700: #0e7490;
+  --primary-800: #155e75;
+  --primary-900: #164e63;
+  --accent: #38bdf8;
 
-  --bg-base: #f5f7fb;
-  --bg-muted: #edf2fb;
-  --surface: #ffffff;
-  --surface-elevated: #f9fbff;
-  --border-subtle: #e6e9f0;
-  --border-strong: #d5dbe7;
+  --bg-base: #020617;
+  --bg-muted: #020617;
+  --surface: #020617;
+  --surface-elevated: #020617;
+  --border-subtle: rgba(30, 64, 175, 0.75);
+  --border-strong: rgba(56, 189, 248, 0.9);
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
   --text-muted: #6b7280;
 
-  --radius-lg: 16px;
-  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
   --radius-sm: 10px;
-  --shadow-soft: 0 12px 40px rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.06);
-  --gradient-primary: linear-gradient(135deg, #2f6ae6, #61a0ff);
+  --shadow-soft: 0 24px 80px rgba(15, 23, 42, 0.9);
+  --shadow-card: 0 18px 60px rgba(15, 23, 42, 0.95);
+  --gradient-primary: linear-gradient(135deg, #22d3ee, #38bdf8, #4ade80);
+  --glass-bg: rgba(15, 23, 42, 0.85);
+  --glass-border: rgba(56, 189, 248, 0.8);
 }
 
 *,
@@ -40,7 +42,7 @@
 
 body {
   margin: 0;
-  background: var(--bg-base);
+  background: radial-gradient(circle at 0 0, #0b1120, #020617 55%);
   color: var(--text-primary);
   font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -55,14 +57,23 @@ a {
   position: relative;
 }
 
+/* 通用玻璃面板，可在需要更“科技感”的卡片上叠加使用 */
+::global(.glass-panel) {
+  background: var(--glass-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(18px);
+}
+
 /* Layout helpers */
-:global(.page-wrap) {
+::global(.page-wrap) {
   padding: 28px;
   max-width: 1280px;
   margin: 0 auto;
 }
 
-:global(.page-header) {
+::global(.page-header) {
   display: flex;
   align-items: center;
   justify-content: space-between;

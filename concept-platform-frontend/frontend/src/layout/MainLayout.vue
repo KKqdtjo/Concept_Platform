@@ -2,7 +2,9 @@
   <div class="layout-shell">
     <aside class="nav-rail surface-card">
       <div class="brand">
-        <div class="brand-mark">CP</div>
+        <div class="brand-mark">
+          <img :src="logoUrl" alt="平台 Logo" class="brand-logo" />
+        </div>
         <div class="brand-text">
           <div class="brand-title">概念验证平台</div>
           <p class="brand-sub">Concept Platform</p>
@@ -61,6 +63,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Document, Plus, Finished, ChatDotSquare } from '@element-plus/icons-vue'
+import logoUrl from '../../renmin-university-of-china-logo-1024px.png'
 
 const router = useRouter()
 const route = useRoute()
@@ -119,13 +122,21 @@ const logout = () => {
 .brand-mark {
   width: 40px;
   height: 40px;
-  border-radius: 12px;
-  background: var(--gradient-primary);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 20%, #ffffff, rgba(255, 255, 255, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+}
+
+.brand-logo {
+  width: 130%;
+  height: 130%;
+  object-fit: contain;
+  transform: translateY(4%);
+  filter: drop-shadow(0 0 8px rgba(148, 27, 27, 0.4));
 }
 
 .brand-title {

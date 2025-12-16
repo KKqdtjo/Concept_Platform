@@ -2,7 +2,7 @@
   <div class="auth-shell">
     <div class="auth-hero surface-card">
       <div class="pill">Concept Platform</div>
-      <h1>概灵数智 · 概念孵化平台</h1>
+      <h1>图灵数智 · 概念孵化平台</h1>
       <p class="muted">将前沿技术创意转化为现实应用，支持项目申报、审核与评审的全流程协作。</p>
       <div class="hero-grid">
         <div class="hero-stat">
