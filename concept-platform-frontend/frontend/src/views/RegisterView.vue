@@ -1,6 +1,6 @@
 <template>
-  <div class="register-container">
-    <el-card class="register-card">
+  <div class="register-container fade-in-up">
+    <el-card class="register-card panel">
       <template #header>
         <div class="card-header">
           <span>注册</span>
@@ -20,10 +20,10 @@
           <el-input v-model="form.realName" placeholder="请输入真实姓名" />
         </el-form-item>
         <el-form-item label="所属单位" prop="company">
-          <el-input v-model="form.company" placeholder="请输入所属单位 (选填)" />
+          <el-input v-model="form.company" placeholder="请输入所属单位 (可选)" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="register-button" :loading="loading" @click="handleRegister">立即注册</el-button>
+          <el-button type="primary" class="register-button btn-tech" :loading="loading" @click="handleRegister">立即注册</el-button>
           <el-button class="back-button" @click="$router.push('/login')">返回登录</el-button>
         </el-form-item>
       </el-form>
@@ -71,7 +71,7 @@ const handleRegister = () => {
   
   registerFormRef.value.validate(async (valid) => {
     if (valid) {
-      console.log('校验通过，正在发送请求...')
+      console.log('验证通过，正在发送请求...')
       loading.value = true
       try {
         const submitData = {
@@ -124,4 +124,16 @@ const handleRegister = () => {
   width: 120px;
   margin-left: 20px;
 }
+
+<style scoped>
+.register-container{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 0px);padding:36px}
+.register-card{width:480px;padding:22px}
+.card-header{font-weight:700;text-align:center;color:var(--accent);font-size:18px;margin-bottom:6px}
+.register-button{width:140px}
+.back-button{width:120px;margin-left:14px}
+
+::v-deep .el-input__inner{background:transparent;border:1px solid rgba(255,255,255,0.05);color:var(--accent-2);border-radius:8px;transition:box-shadow var(--smooth-time)}
+::v-deep .el-input__inner:focus{border-color:var(--accent);box-shadow:0 8px 28px rgba(124,77,255,0.06),0 0 10px rgba(124,77,255,0.04) inset}
+
+@media (max-width:480px){.register-card{width:94vw;padding:14px}}
 </style>

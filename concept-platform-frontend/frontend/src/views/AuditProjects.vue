@@ -1,6 +1,6 @@
 <template>
-  <div class="audit-projects-container">
-    <el-card>
+  <div class="audit-projects-container fade-in-up">
+    <el-card class="panel">
       <template #header>
         <div class="card-header">
           <span>项目审核</span>
@@ -22,7 +22,7 @@
                 >
                   查看附件
                 </el-link>
-                <span v-else style="color: #909399; font-size: 12px;">无附件</span>
+                <span v-else style="color: #909399; font-size: 12px;">无附�?</span>
               </template>
             </el-table-column>
             <el-table-column prop="techDomain" label="技术领域" width="150" />
@@ -39,7 +39,7 @@
           </el-table>
         </el-tab-pane>
 
-        <el-tab-pane label="已审核" name="processed">
+        <el-tab-pane label="已审核?" name="processed">
           <el-table :data="processedList" v-loading="loading" style="width: 100%" stripe>
             <el-table-column prop="projectName" label="项目名称" min-width="150" />
              <!-- 这里后端暂未返回申报人姓名，暂时留空或不显示 -->
@@ -72,7 +72,7 @@
       <el-form :model="auditForm" label-width="80px">
         <el-form-item label="审核结果">
           <el-radio-group v-model="auditForm.action">
-            <el-radio value="PASS">通过并指派</el-radio>
+            <el-radio value="PASS">通过并指导</el-radio>
             <el-radio value="REJECT">驳回</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -84,7 +84,7 @@
                 {{ item.realName || item.username }} ({{ item.field || '通用' }})
               </el-checkbox>
             </el-checkbox-group>
-            <div class="el-upload__tip">请选择 1-3 名专家</div>
+            <div class="el-upload__tip">请选择 1-3 名专家?</div>
           </el-form-item>
         </template>
 
@@ -109,7 +109,7 @@
         <el-descriptions-item label="技术领域">{{ currentDetail.techDomain }}</el-descriptions-item>
         <!-- 假设申报人名字在 applicantName 字段，如果后端没返回可以暂时不显示或显示 ID -->
         <el-descriptions-item label="申报人">{{ currentDetail.applicantName || currentDetail.applicantId }}</el-descriptions-item>
-        <el-descriptions-item label="项目简介">{{ currentDetail.description }}</el-descriptions-item>
+        <el-descriptions-item label="项目简介?">{{ currentDetail.description }}</el-descriptions-item>
         <el-descriptions-item label="附件">
           <el-link 
             v-if="currentDetail.attachmentUrl" 
@@ -117,9 +117,9 @@
             target="_blank" 
             type="primary"
           >
-            下载申报书
+            下载申报文件
           </el-link>
-          <span v-else style="color: #909399;">无附件</span>
+          <span v-else style="color: #909399;">无附件?</span>
         </el-descriptions-item>
       </el-descriptions>
       <template #footer>
@@ -153,7 +153,7 @@ const auditForm = reactive({
   comment: ''
 })
 
-// 计算属性拆分数据
+// 计算属性拆分数�?
 const pendingList = computed(() => {
   return allProjects.value.filter(item => item.status === 1)
 })
@@ -162,14 +162,14 @@ const processedList = computed(() => {
   return allProjects.value.filter(item => [2, 3, 9].includes(item.status))
 })
 
-// 状态显示辅助函数 (从 ProjectListView 复制而来)
+// 状态显示辅助函�? (�? ProjectListView 复制而来)
 const getStatusType = (status) => {
   const map = {
     0: 'info',
     1: 'primary',
-    2: 'warning', // 评审中
-    3: 'success', // 已入库
-    9: 'danger'   // 已驳回
+    2: 'warning', // 评审�?
+    3: 'success', // 已入�?
+    9: 'danger'   // 已驳�?
   }
   return map[status] || 'info'
 }
@@ -208,11 +208,11 @@ const fetchData = async () => {
 const fetchExperts = async () => {
   try {
     const res = await getExperts()
-    // 打印日志，确认后端是否返回了 field 和 realName 字段
+    // 打印日志，确认后端是否返回了 field �? realName 字段
     console.log('获取到的专家列表:', res)
     // 假设返回的是数组
     const list = Array.isArray(res) ? res : (res.list || [])
-    // 映射确保 userId 存在，防止复选框全选 bug
+    // 映射确保 userId 存在，防止复选框全�? bug
     expertList.value = list.map(item => ({
       ...item,
       userId: item.userId || item.id
@@ -236,7 +236,7 @@ const handleAudit = (row) => {
   auditForm.comment = ''
   dialogVisible.value = true
   
-  // 专家列表已经在 onMounted 加载
+  // 专家列表已经�? onMounted 加载
 }
 
 const handleView = (row) => {
@@ -259,7 +259,7 @@ const submitAudit = async () => {
       ElMessage.warning('请选择 1-3 名专家')
       return
     }
-    // 通过并指派
+    // 通过并指�?
     payload = {
       projectId: auditForm.projectId,
       pass: true,
@@ -298,7 +298,7 @@ const submitAudit = async () => {
 
 onMounted(() => {
   fetchData()
-  fetchExperts() // 页面加载时获取专家列表
+  fetchExperts() // 页面加载时获取专家列�?
 })
 </script>
 
@@ -311,8 +311,25 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
 }
-/* 调整 Tab 内容的间距 */
+/* 调整 Tab 内容的间�? */
 .audit-tabs {
   margin-top: 10px;
 }
+<style scoped>
+.audit-projects-container{padding:20px}
+.card-header{display:flex;justify-content:space-between;align-items:center;color:var(--hologram-white)}
+.audit-tabs{margin-top:10px}
+
+/* ������ʽ */
+::v-deep .el-table{background:transparent}
+::v-deep .el-table .el-table__row:hover{background:linear-gradient(90deg, rgba(0,243,255,0.03), rgba(157,0,255,0.02))}
+
+/* ������ѡ������Ч (CSDN ���) */
+::v-deep .el-input__inner, ::v-deep .el-textarea__inner{background:transparent;border:1px solid rgba(255,255,255,0.04);border-radius:8px;transition:box-shadow var(--smooth-time) ease,border-color var(--smooth-time) ease}
+::v-deep .el-input__inner:focus, ::v-deep .el-textarea__inner:focus{outline:none;border-color:var(--accent);box-shadow:0 8px 28px rgba(0,243,255,0.06) inset}
+
+/* Dialog �еİ�ťʹ���ص���ʽ */
+::v-deep .el-button--primary{box-shadow:0 8px 24px rgba(0,243,255,0.05)}
+
+@media (max-width:800px){.audit-projects-container{padding:12px}}
 </style>

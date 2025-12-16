@@ -8,7 +8,7 @@
           class="el-menu-vertical-demo"
           router
         >
-          <!-- APPLICANT (申报人) 菜单 -->
+           <!-- APPLICANT (申报人) 菜单 -->
           <template v-if="userRole === 'APPLICANT' || userRole === 'student'">
              <el-menu-item index="/my-projects">
               <el-icon><document /></el-icon>
@@ -62,7 +62,7 @@ const route = useRoute()
 
 const user = ref({})
 const username = computed(() => user.value.username || 'Unknown')
-const userRole = computed(() => user.value.role || 'GUEST') // 默认 GUEST
+const userRole = computed(() => user.value.role || 'GUEST') // 榛樿 GUEST
 
 const activeMenu = computed(() => route.path)
 
@@ -71,7 +71,7 @@ onMounted(() => {
   if (storedUser) {
     try {
       user.value = JSON.parse(storedUser)
-      // 兼容之前的模拟登录逻辑，如果没有 role 默认给一个，或者确保登录时写入 role
+      // 鍏煎涔嬪墠鐨勬ā鎷熺櫥褰曢€昏緫锛屽鏋滄病鏈� role 榛樿缁欎竴涓紝鎴栬€呯‘淇濈櫥褰曟椂鍐欏叆 role
       if (!user.value.role && user.value.username === 'student') {
         user.value.role = 'APPLICANT'
       }
@@ -88,39 +88,46 @@ const logout = () => {
 </script>
 
 <style scoped>
-.common-layout {
-  height: 100vh;
+.common-layout{height:100vh}
+.el-container{height:100%}
+
+/* 侧边栏 / 头部 / 主区域 使用玻璃质感面板 */
+.el-aside{
+  background: linear-gradient(180deg, rgba(10,10,16,0.6), rgba(18,20,32,0.45));
+  border-right: 1px solid rgba(255,255,255,0.03);
+  backdrop-filter: blur(10px);
+  padding-top:8px;
 }
-.el-container {
-  height: 100%;
+.logo{
+  height:64px;line-height:64px;text-align:center;font-size:15px;font-weight:700;color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.03);letter-spacing:0.6px
 }
-.el-aside {
-  background-color: #fff;
-  border-right: 1px solid #dcdfe6;
+.el-header{
+  background: linear-gradient(180deg, rgba(10,12,20,0.22), transparent);
+  border-bottom:1px solid rgba(255,255,255,0.02);
+  display:flex;justify-content:flex-end;align-items:center;padding:8px 20px
 }
-.logo {
-  height: 60px;
-  line-height: 60px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  border-bottom: 1px solid #dcdfe6;
+.header-content{display:flex;gap:12px;align-items:center;color:rgba(235,245,255,0.9)}
+.el-main{padding:20px}
+
+/* 使用科技风标题 */
+.logo, .card-header{font-family:'Orbitron','Rajdhani','Exo 2','Poppins','Microsoft YaHei',sans-serif}
+
+/* 面板基类，应用到内部视图 */
+.el-main .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);border-radius:10px;padding:18px}
+
+/* 菜单样式优化，使用高性能 transform 交互 */
+::v-deep .el-menu{
+  background:transparent;border-right:0;color:rgba(210,230,255,0.8)
 }
-.el-header {
-  background-color: #fff;
-  border-bottom: 1px solid #dcdfe6;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+::v-deep .el-menu-item{
+  transition:transform var(--smooth-time) cubic-bezier(.2,.9,.25,1),color var(--smooth-time);
+  border-radius:8px;margin:6px 8px;padding:10px 12px
 }
-.header-content {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-.el-main {
-  background-color: #f5f7fa;
-  padding: 20px;
-}
+::v-deep .el-menu-item:hover{transform:translateX(6px);background:linear-gradient(90deg, rgba(0,208,255,0.04), rgba(124,77,255,0.03));color:var(--accent)}
+::v-deep .el-menu-item.is-active{background:linear-gradient(90deg, rgba(0,208,255,0.06), rgba(124,77,255,0.04));color:var(--accent)}
+
+/* 调整按钮样式 */
+::v-deep .el-button--link{color:rgba(200,230,255,0.9)}
+
 </style>
 

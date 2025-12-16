@@ -1,6 +1,6 @@
 <template>
-  <div class="my-projects-container">
-    <el-card>
+  <div class="my-projects-container fade-in-up">
+    <el-card class="panel">
       <template #header>
         <div class="card-header">
           <span>我的项目</span>
@@ -11,7 +11,7 @@
       <el-table :data="tableData" v-loading="loading" style="width: 100%" stripe>
         <el-table-column prop="projectName" label="项目名称" min-width="150" />
         <el-table-column prop="techDomain" label="技术领域" width="150" />
-        <el-table-column prop="budget" label="预期经费 (万元)" width="150" />
+        <el-table-column prop="budget" label="预算 (万元)" width="150" />
         <el-table-column prop="status" label="当前状态" width="120">
           <template #default="scope">
             <el-tag :type="getStatusType(scope.row.status)">
@@ -40,23 +40,23 @@
       </el-table>
     </el-card>
 
-    <!-- 反馈弹窗 -->
+    <!-- 鍙嶉寮圭獥 -->
     <el-dialog v-model="feedbackVisible" title="评审反馈" width="600px">
-      <!-- 情况A: 初审被拒 -->
+      <!-- 鎯呭喌A: 鍒濆琚嫆 -->
       <div v-if="currentProject.status === 9">
-        <el-alert title="项目已被驳回" type="error" :closable="false" show-icon />
+        <el-alert title="项目已被退回" type="error" :closable="false" show-icon />
         <div style="margin-top: 20px;">
-          <p><strong>驳回理由：</strong></p>
+          <p><strong>退回理由：</strong></p>
           <div style="background: #fef0f0; padding: 10px; border-radius: 4px; color: #f56c6c;">
-            {{ currentProject.rejectReason || '无详细理由' }}
+            {{ currentProject.rejectReason || '暂无退回理由' }}
           </div>
         </div>
       </div>
 
-      <!-- 情况B: 专家评审 -->
+      <!-- 鎯呭喌B: 涓撳璇勫 -->
       <div v-else-if="currentProject.status === 3">
         <div style="margin-bottom: 20px;">
-          <el-statistic title="平均评分" :value="averageScore" precision="1" />
+          <el-statistic title="平均评审分" :value="averageScore" precision="1" />
         </div>
         
         <el-table :data="reviewList" border style="width: 100%">
@@ -66,7 +66,7 @@
              </template>
           </el-table-column>
           <el-table-column prop="score" label="评分" width="80" />
-          <el-table-column prop="comments" label="评语" />
+          <el-table-column prop="comments" label="评审意见" />
         </el-table>
       </div>
 
@@ -99,24 +99,24 @@ const averageScore = computed(() => {
 
 const getStatusType = (status) => {
   const map = {
-    0: 'info',    // 草稿
-    1: 'primary', // 待初审
-    2: 'warning', // 评审中
-    3: 'success', // 已入库
-    9: 'danger'   // 已驳回
+    0: 'info',    // 鑽夌ǹ
+    1: 'primary', // 寰呭垵瀹�
+    2: 'warning', // 璇勫涓�
+    3: 'success', // 宸插叆搴�
+    9: 'danger'   // 宸查┏鍥�
   }
   return map[status] || 'info'
 }
 
 const getStatusLabel = (status) => {
   const map = {
-    0: '草稿',
-    1: '待初审',
-    2: '评审中',
-    3: '已入库',
-    9: '已驳回'
+    0: 'info',
+    1: 'primary',
+    2: 'warning',
+    3: 'success',
+    9: 'danger'
   }
-  return map[status] || '未知状态'
+  return map[status] || 'info'
 }
 
 const fetchData = async () => {
@@ -157,14 +157,14 @@ const fetchData = async () => {
 const handleViewFeedback = async (row) => {
   currentProject.value = row
   feedbackVisible.value = true
-  reviewList.value = [] // 重置列表
+  reviewList.value = [] // 閲嶇疆鍒楄〃
 
   if (row.status === 3) {
-    // 只有状态为3（已入库/评审结束）才去拉取评审详情
-    // 状态9（驳回）直接显示 row 中的 rejectReason
+    // 鍙湁鐘舵€佷负3锛堝凡鍏ュ簱/璇勫缁撴潫锛夋墠鍘绘媺鍙栬瘎瀹¤鎯�
+    // 鐘舵€�9锛堥┏鍥烇級鐩存帴鏄剧ず row 涓殑 rejectReason
     try {
       const res = await getProjectReviews(row.id || row.projectId)
-      console.log('获取到的评审列表:', res) // 增加日志
+      console.log('获取到我的评审列表:', res) // 添加日志
       if (Array.isArray(res)) {
         reviewList.value = res
       } else if (res && Array.isArray(res.list)) {
@@ -191,4 +191,12 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
 }
+
+<style scoped>
+.my-projects-container{padding:20px}
+.card-header{display:flex;justify-content:space-between;align-items:center;color:rgba(235,245,255,0.95)}
+
+::v-deep .el-table{background:transparent}
+::v-deep .el-tag{background:rgba(255,255,255,0.03);color:var(--accent)}
+
 </style>

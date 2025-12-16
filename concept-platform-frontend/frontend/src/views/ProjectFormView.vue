@@ -1,6 +1,6 @@
 <template>
-  <div class="project-form-container">
-    <el-card>
+  <div class="project-form-container fade-in-up">
+    <el-card class="panel">
       <template #header>
         <div class="card-header">
           <span>项目申报</span>
@@ -23,9 +23,9 @@
 
         <el-form-item label="附件上传" prop="attachmentUrl">
           <!-- 
-            action: 上传接口地址，硬编码为后端地址
-            on-success: 上传成功后的回调
-            limit: 限制上传1个文件
+            action: 涓婁紶鎺ュ彛鍦板潃锛岀‖缂栫爜涓哄悗绔湴鍧€
+            on-success: 涓婁紶鎴愬姛鍚庣殑鍥炶皟
+            limit: 闄愬埗涓婁紶1涓枃浠�
           -->
           <el-upload
             class="upload-demo"
@@ -68,7 +68,7 @@ const form = reactive({
   projectName: '',
   techDomain: '',
   description: '',
-  attachmentUrl: '' // 存储上传成功后的 URL
+  attachmentUrl: '' // 瀛樺偍涓婁紶鎴愬姛鍚庣殑 URL
 })
 
 const rules = {
@@ -77,9 +77,9 @@ const rules = {
   attachmentUrl: [{ required: true, message: '请上传附件', trigger: 'change' }]
 }
 
-// 上传成功回调
+// 涓婁紶鎴愬姛鍥炶皟
 const handleUploadSuccess = (response, uploadFile) => {
-  // 假设后端返回格式为 { code: 200, msg: "success", data: "http://xxx/file.pdf" }
+  // 鍋囪鍚庣杩斿洖鏍煎紡涓� { code: 200, msg: "success", data: "http://xxx/file.pdf" }
   if (response.code === 200) {
     form.attachmentUrl = response.data
     ElMessage.success('上传成功')
@@ -102,7 +102,7 @@ const handleSubmit = async () => {
     if (valid) {
       loading.value = true
       try {
-        // 1. 获取用户信息
+        // 1. 鑾峰彇鐢ㄦ埛淇℃伅
         const userStr = localStorage.getItem('user')
         let user = {}
         if (userStr) {
@@ -113,31 +113,31 @@ const handleSubmit = async () => {
           }
         }
         
-        // 关键点：打印调试
+        // 鍏抽敭鐐癸細鎵撳嵃璋冭瘯
         console.log('Current User:', user)
 
-        // 2. 构建提交数据
+        // 2. 鏋勫缓鎻愪氦鏁版嵁
         const submitData = {
           projectName: form.projectName,
           description: form.description,
           techDomain: form.techDomain,
           attachmentUrl: form.attachmentUrl,
-          status: 1 // 强制设置为 1 (待初审)
+          status: 1 // 寮哄埗璁剧疆涓� 1 (寰呭垵瀹�)
         }
 
-        // 3. 强制赋值 applicantId
-        // 尝试多种可能的字段名
+        // 3. 寮哄埗璧嬪€� applicantId
+        // 灏濊瘯澶氱鍙兘鐨勫瓧娈靛悕
         const userId = user.userId || user.user_id || user.id
 
         if (userId) {
           submitData.applicantId = userId
         } else {
-          // 保底策略
+          // 淇濆簳绛栫暐
           submitData.applicantId = 1
           ElMessage.warning('当前未读取到用户ID，使用测试ID: 1')
         }
 
-        // 4. 发送请求
+        // 4. 鍙戦€佽姹
         await addProject(submitData)
         ElMessage.success('项目申报成功')
         router.push('/')
@@ -158,15 +158,16 @@ const resetForm = () => {
 </script>
 
 <style scoped>
-.project-form-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+.project-form-container{padding:20px;max-width:800px;margin:0 auto;position:relative}
+.project-decor{position:absolute;inset:0;z-index:0;pointer-events:none}
+.project-decor .shape-a{position:absolute;width:160px;height:160px;right:6%;top:6%;background:linear-gradient(135deg,var(--accent-2),transparent);clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%)}
+.project-decor .shape-b{position:absolute;width:110px;height:110px;left:6%;bottom:6%;background:linear-gradient(225deg,var(--accent),transparent);border-radius:50%}
+.card-header{display:flex;justify-content:space-between;align-items:center;color:rgba(235,245,255,0.95);position:relative;z-index:2}
+
+::v-deep .el-upload__tip{color:rgba(200,220,255,0.7)}
+::v-deep .el-input__inner{background:transparent;border:1px solid rgba(255,255,255,0.05);border-radius:8px}
+
+.panel{position:relative;z-index:2}
+
 </style>
 
